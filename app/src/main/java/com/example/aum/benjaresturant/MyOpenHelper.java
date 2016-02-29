@@ -5,27 +5,30 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by aum on 2/29/2016.
+ * Created by masterUNG on 2/29/16 AD.
  */
 public class MyOpenHelper extends SQLiteOpenHelper{
+
     //Explicit
-    public static final String database_name = "benja.db";
+    public static final String database_name = "banja.db";
     private static final int database_version = 1;
+
     private static final String create_table_user = "create table userTABLE (" +
             "_id integer primary key, " +
             "User text, " +
             "Password text, " +
             "Name text);";
+
     private static final String create_table_food = "create table foodTABLE (" +
             "_id integer primary key, " +
             "Food text, " +
             "Price text, " +
             "Source text);";
 
-    public MyOpenHelper(Context context) {
-        super(context, database_name, null,database_version);
 
-    } // Constructor
+    public MyOpenHelper(Context context) {
+        super(context, database_name, null, database_version);
+    }   // Constructor
 
 
     @Override
@@ -35,7 +38,7 @@ public class MyOpenHelper extends SQLiteOpenHelper{
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
-} // Main Class
+}   // Main Class
