@@ -1,5 +1,6 @@
 package com.example.aum.benjaresturant;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -64,13 +66,45 @@ public class MainActivity extends AppCompatActivity {
         if (userString.equals("")  || (passwordString.equals(""))) {
             //Have Space
             MyAlertDialog myAlertDialog = new MyAlertDialog();
-            myAlertDialog.myDialog(MainActivity.this, "มีช่องว่าง", "กรุณาฟังให้จบ");
+            myAlertDialog.myDialog(MainActivity.this, "มีช่องว่าง", "กรุณาฟังให้จบ" +
+                    " ");
         } else {
             // No Space
-
+            chececkUser();
         }
 
     } // ClickLogin
+
+    private void chececkUser() {
+        try {
+
+            String[] myResultStrings = myManage.searchUser(userString);
+            Log.d("banja", "Name = " + myResultStrings[3]);
+            if (passwordString.equals(myResultStrings[2])) {
+                welcome(myResultStrings[3]);
+
+            } else {
+                MyAlertDialog myAlertDialog = new MyAlertDialog();
+                myAlertDialog.myDialog(MainActivity.this,
+                        "Password False",
+                        "Please Try Again Password");
+            } 
+                
+        } catch (Exception e) {
+            MyAlertDialog myAlertDialog = new MyAlertDialog();
+            myAlertDialog.myDialog(MainActivity.this, "ไม่มี User",
+                    "ไม่มี" + userString + "ในฐานข้อมูลของเรา");
+        }
+    } //checkUser
+
+    private void welcome(String myResultString) {
+        Toast.makeText(MainActivity.this, "welcome" +myResultString, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MainActivity.this, ShowMenuFood.class);
+        intent.putExtra("oficer", myResultString);
+        startActivity(intent);
+        finish();
+    }
 
 
     private void bindWidget() {
@@ -93,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             //1. Create InputStream
             InputStream inputStream = null;
             String[] urlJSON = new String[2];
-            urlJSON[0] = "http://swiftcodingthai.com/29feb/php_get_user_master.php";
+            urlJSON[0] = "http://swiftcodingthai.com/29feb/php_get_user_aum.php";
             urlJSON[1] = "http://swiftcodingthai.com/29feb/php_get_food.php";
             HttpPost httpPost = null;
 
